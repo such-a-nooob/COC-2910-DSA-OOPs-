@@ -1,7 +1,5 @@
 /*
 a) Search for a given number in a sorted array using (i) linear search and (ii) binary search algorithms. The input to the program are: size of array and elements in the array. Generate the elements in the array using random number generator. The program should print the index of given number in the array if found.
-
-
 b) Search for a given number in a two-dimensional array using only binary search. The elements in all the rows are sorted. The rows in the array are arranged such that last element of a row is smaller than first element of the next row. The input to the program are: number of rows and columns in the array and elements in the array. Generate the elements in the array using random number generator. The program should print the index of the given number in the array if found.
 
 For each part of the program, print the number of comparisons also.
