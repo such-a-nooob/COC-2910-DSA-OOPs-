@@ -115,10 +115,9 @@ void stdBubbleSort(int a[], int n)
 
 void cocktailShakerSort(int a[], int n)
 {
-	int i, j, swaped=1;
+	int i, j, swaped;
 	for(i=0; ; i++)
 	{
-		if(!swaped) break; 
 		cmp=0; swaped=0;
 		printf("\n--> PASS %d",i+1);
 		printf("\n--Forward Pass--");
@@ -130,15 +129,16 @@ void cocktailShakerSort(int a[], int n)
 		}
 		printf("Comparisons : %d\n",cmp);	
 		if(!swaped) break;
-		cmp=0; --j; swaped=0;
+		cmp=0; swaped=0;
 		printf("\n--Backward Pass--");
-		for (;j>i; j--)
+		for (--j; j>i; j--)
 		{
 			cmp++;
 			if(a[j]<a[j-1]) swaped=swap(&a[j],&a[j-1]);
 			printArray(a,n);
 		}
-		printf("Comparisons : %d\n",cmp);			
+		printf("Comparisons : %d\n",cmp);
+		if(!swaped) break; 
 	}
 	printf("\nFINAL OUTPUT : ");
 	printArray(a,n);
