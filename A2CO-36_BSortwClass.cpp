@@ -15,6 +15,14 @@ using namespace std;
 class BubbleSort {
     int a[1000], n;
     public:
+    BubbleSort()
+    {
+	cout<<"Enter the number of elements in array (n) : "; cin>>n;
+	time_t t;
+	srand((unsigned) time(&t));
+	for(int i=0; i<n; i++)
+		a[i]=rand()%1000;
+    }
     void swap(int x, int y)
     {
         int t;
@@ -25,7 +33,6 @@ class BubbleSort {
         for(int i=0; i<n; i++)
             cout<<a[i]<<" ";
     }
-    void input();
     void bsort();
 };
 
@@ -40,19 +47,9 @@ void BubbleSort::bsort()
 	}
 }
 
-void BubbleSort::input()
-{
-    cout<<"Enter the number of elements in array (n) : "; cin>>n;
-	time_t t;
-	srand((unsigned) time(&t));
-	for(int i=0; i<n; i++)
-		a[i]=rand()%1000;
-}
-
 int main()
 {
     BubbleSort obj;
-    obj.input();
     cout<<"Initial Array :\n";
     obj.display();
     obj.bsort();
