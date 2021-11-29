@@ -1,7 +1,9 @@
 /*
-Implement a class in C++/Java for (a) (plain) two-dimensional matrix having methods for each of the following operations: add, subtract, multiply. (b) sparse matrix having methods for each of the following operations: add, subtract, multiply. If most of the elements of the matrix have 0 value, then it is called a sparse matrix. The following representation can be used for the sparse matrix implementation:
+Implement a class in C++/Java for 
+(a) (plain) two-dimensional matrix having methods for each of the following operations: add, subtract, multiply. 
+(b) sparse matrix having methods for each of the following operations: add, subtract, multiply. If most of the elements of the matrix have 0 value, then it is called a sparse matrix. The following representation can be used for the sparse matrix implementation:
 A 2D array can be used to represent a sparse matrix in which there are three rows named as Row: Index of row, where non-zero element is located Column: Index of column, where non-zero element is located Value: Value of the non zero element located at index – (row,column)
-The number of columns is equal to the number of non-zero elements in the spares matrix
+The number of columns is equal to the number of non-zero elements in the spares matrix 
 
 Name : Muniba Rahman
 Faculty no. : 20COB275
