@@ -30,7 +30,7 @@ void binaryInsertionSort(int[], int);
 int cmp;
 int line;
 
-int main()
+int main() 
 {
 	int a[1000], n, f, i, j;
 	
