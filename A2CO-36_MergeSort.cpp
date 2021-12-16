@@ -4,7 +4,7 @@ Write a program in C++/Java to implement Merge Sort.
 Implementation must be non-recursive as explained in the lecture. 
 Use tabbing with binary search in the merging process. Show the intermediate output after each pass
 
-Name : Muniba Rahman
+Name : Muniba Rahman 
 Faculty no. : 20COB275
 Sr no. : A2CO-36
 
