@@ -9,7 +9,7 @@ functions:
 Generate 40 numbers randomly in the range from 0 to 999 and insert them into the hash table. For each number to be inserted, print the location where the number is inserted and number of probes required to insert it into the hash table for all collision resolution methods. Use hash function “k mod 47”. Use “7-(k mod 7)” as the second hash function in double hashing.
 For Separate Chaining, use an array of size 5 at each location in the hash table, instead of a linked list. (Such arrays are called buckets. This approach is not as efficient as the linked list approach, however, because of the problem of choosing the size of the buckets. If they’re too small they might overflow, and if they’re too large they waste memory. Linked lists, which allocate memory dynamically, don’t have this problem.)
 
-Name : Muniba Rahman
+Name : Muniba Rahman 
 Faculty no. : 20COB275
 Sr no. : A2CO-36
 
