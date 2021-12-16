@@ -28,7 +28,7 @@ void linear();	//for performing linear search in 1D Array
 void abinary();	//for performing binary search in 1D Array
 int bbinary();	//for performing binary search in 2D Array
 
-int main()
+int main() 
 {
     int i,j;
     time_t t;
