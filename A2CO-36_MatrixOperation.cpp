@@ -29,7 +29,7 @@ public:
 		cin>>row>>col;
 		cout<<"Enter "<<row*col<<" elements in matrix\n";
 		for(int i=0; i<row; i++)
-			for(int j=0; j<col; j++)
+			for(int j=0; j<col; j++) 
 				//mat[i][j]=rand()%50;
 				cin>>mat[i][j];
 	}
