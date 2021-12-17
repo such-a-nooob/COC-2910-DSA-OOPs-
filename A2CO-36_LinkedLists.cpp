@@ -69,7 +69,7 @@ int main()
 					else
 					{
 						cout<<"\n\nA)WHERE DO YOU WANT TO INSERT?\n  1. In the BEGINNING of the list\n  2. At the END of the list\n  3. AFTER a node";
-						cout<<"\nEnter you choice : "; cin>>c;
+						cout<<"\nEnter you choice : "; cin>>c; 
 						switch(c)
 						{
 							case 1:
