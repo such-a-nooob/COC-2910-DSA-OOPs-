@@ -68,11 +68,10 @@ int main()
 					}
 					else
 					{
-						cout<<"\n\nA)WHERE DO YOU WANT TO INSERT?\n  1. In the BEGINNING of the list\n  2. At the END of the list\n  3. AFTER a node\nB) EXIT (Press 0)";
+						cout<<"\n\nA)WHERE DO YOU WANT TO INSERT?\n  1. In the BEGINNING of the list\n  2. At the END of the list\n  3. AFTER a node";
 						cout<<"\nEnter you choice : "; cin>>c;
 						switch(c)
 						{
-							case 0: break;
 							case 1:
 								cout<<"\nEnter the element to be inserted : "; cin>>x;
 								l1.insertX(1,x);
