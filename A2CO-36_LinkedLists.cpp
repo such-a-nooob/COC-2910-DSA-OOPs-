@@ -17,6 +17,7 @@ Sr no. : A2CO-36
 */
 #include <iostream>
 #include <stdlib.h>
+#define beginning -1
 
 using namespace std;
 
@@ -26,14 +27,15 @@ public:
 	struct node
 	{
 		int item;
-		node* loc;	
+		node* loc; //to store the address of the next node	
 	};
 
-	node* start = NULL;
+	node* start = NULL; //start is a pointer to the first node of the list
 
+	//function to create a node
 	node* createNode(int x=0)
 	{
-		node* temp = (node*)malloc(sizeof(node));
+		node* temp = (node*)malloc(sizeof(node)); //allocating memory to a node
 		temp->item = x;
 		temp->loc = NULL;
 		return temp;
@@ -49,7 +51,7 @@ public:
 
 int main()
 {
-	linkedList l1;
+	linkedList l1;	//object of class linkedList to access its member methods
 	int ch;
 	do
 	{
@@ -58,53 +60,65 @@ int main()
 		cout<<"\nEnter your choice : "; cin>>ch;
 		switch(ch)
 		{
+			//Exit
 			case 0: break;
+			//Insert element X
 			case 1:
 				int c;
-					if(l1.isEmpty())
+				//if list is empty, insert element at the very beginning and initialise the start pointer
+				if(l1.isEmpty())
+				{
+					cout<<"\nEnter the element to be inserted : "; cin>>x;
+					l1.insertX(0,x);
+				}
+				else
+				{
+					/*if list is not empty, the element can be inserted 
+					-in the beginning
+					-at the end, OR
+					-after Kth element
+					*/
+					cout<<"\n\nA)WHERE DO YOU WANT TO INSERT?\n  1. In the BEGINNING of the list\n  2. At the END of the list\n  3. AFTER a node";
+					cout<<"\nEnter you choice : "; cin>>c;
+					switch(c)
 					{
-						cout<<"\nEnter the element to be inserted : "; cin>>x;
-						l1.insertX(0,x);
+						case 1:
+							cout<<"\nEnter the element to be inserted : "; cin>>x;
+							l1.insertX(beginning,x);
+							break;
+						case 2:
+							cout<<"\nEnter the element to be inserted : "; cin>>x;
+							l1.insertX(l1.length(), x);
+							break;
+						case 3:
+							cout<<"\nEnter the element to be inserted : "; cin>>x;
+							cout<<"AFTER how many elements you want "<<x<<" to be inserted? "; 
+							cin>>k;
+							l1.insertX(k, x);
+							break;
+						default:
+							cout<<"\nInvalid choice!";
 					}
-					else
-					{
-						cout<<"\n\nA)WHERE DO YOU WANT TO INSERT?\n  1. In the BEGINNING of the list\n  2. At the END of the list\n  3. AFTER a node";
-						cout<<"\nEnter you choice : "; cin>>c; 
-						switch(c)
-						{
-							case 1:
-								cout<<"\nEnter the element to be inserted : "; cin>>x;
-								l1.insertX(1,x);
-								break;
-							case 2:
-								cout<<"\nEnter the element to be inserted : "; cin>>x;
-								l1.insertX(l1.length(), x);
-								break;
-							case 3:
-								cout<<"\nEnter the element to be inserted : "; cin>>x;
-								cout<<"After how many elements you want "<<x<<" to be inserted? "; 
-								cin>>k;
-								l1.insertX(k, x);
-								break;
-							default:
-								cout<<"\nInvalid choice!";
-						}
-					}
+				}
 				break;
+			//Delete element from Kth position of the list
 			case 2:
 				cout<<"\nEnter the position of the element to be deleted : "; cin>>k;
 				l1.deleteX(k, x);
 				if(x) cout<<"\nElement "<<x<<" deleted from position "<<k;
 				break;
+			//Find an element X in the list
 			case 3:
 				cout<<"\nEnter the element to be searched : "; cin>>x;
 				k = l1.find(x);
 				if(k) cout<<"\nElement "<<x<<" found at position "<<k;
 				else  cout<<"\nElement "<<x<<" not found!";
 				break;
+			//Display the entire list
 			case 4:
 				l1.display();
 				break;
+			//Display the number of elements in the list
 			case 5:
 				cout<<"\nNumber of elements in the Linear list : "<<l1.length();
 				break;
@@ -117,14 +131,15 @@ int main()
 
 void linkedList::insertX(int pos, int x)
 {
-	//create a node with the given element
+	//create a node with the given element X
 	node* temp;
 	temp = createNode(x);
 
+	//if list is empty, initialise the START pointer
 	if(isEmpty())
 		start = temp;
 	//inserting in the beginning of the list
-	else if(pos==1)
+	else if(pos==beginning)
 	{
 		temp->loc = start;
 		start = temp;
@@ -134,6 +149,7 @@ void linkedList::insertX(int pos, int x)
 		cout<<"\nCan't Insert!\nThe position you entered exceeds the length of the list!";
 		return;
 	}
+	//inserting the node after K elements 
 	else
 	{
 		pos-=1;
@@ -150,6 +166,7 @@ void linkedList::insertX(int pos, int x)
 
 void linkedList::deleteX(int pos, int &x)
 {
+	//can't delete element from an empty list obv dah!
 	if(isEmpty())
 	{
 		cout<<"\nThe list is already empty!";
@@ -162,17 +179,19 @@ void linkedList::deleteX(int pos, int &x)
 		x = 0;
 		//return;
 	}
+	//deleting the first node, START pointer need to be changed
 	else if(pos==1)
 	{
 		x = start->item;
 		start = start->loc;
 	}
+	//deleting the Kth node
 	else
 	{
-		node* ptr = start;
-		node* prev = start;
+		node* ptr = start; //will point to the node to be deleted
+		node* prev = start; //will point to the node previous to the desired node
 
-		pos-=1;
+		pos-=1; //to reach to the desired (Kth) node, (K-1) nodes are to be traversed
 		while(pos!=0)
 		{
 			prev = ptr;
@@ -182,11 +201,12 @@ void linkedList::deleteX(int pos, int &x)
 		prev->loc = ptr->loc; 
 		x = ptr->item;
 	}
+	//X stores the element ie deleted
 }
 
 int linkedList::find(int x)
 {
-	int pos = 0;
+	int pos = 0;	//to store the position of element X in the list
 	if(isEmpty())
 	{
 		cout<<"\nList is empty!";
@@ -216,6 +236,7 @@ void linkedList::display()
 
 bool linkedList::isEmpty()
 {
+	//START pointer will be null if there is no node in the list
 	if(start == NULL)
 		return true;
 	else
