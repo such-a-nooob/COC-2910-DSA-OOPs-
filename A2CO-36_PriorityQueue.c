@@ -15,6 +15,7 @@ Sr no. : A2CO-36
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <limits.h>
 
 #define null 0
 #define SIZE 100
@@ -82,46 +83,45 @@ void enqueueSA(int x, int y)
 //find the index of the element with highest priority
 int maxPriority()
 {
-	int small, max;
-	// if REAR < FRONT, the last element with the same priority would be dequeued 
-	// cz queue follows FIFO order
-	// REAR < FRONT mean that the elements at the beginning of the queue are inserted afterwards but are in the beginning due to the circular property of the queue)
-	if((singleQ->rear) < (singleQ->front))
+	int small=INT_MAX, max;
+	for(int i=singleQ->front; i<MAX; i++)
 	{
-		for(int i=0; i<MAX; i++)
+		if((singleQ->p[i] != null) && (singleQ->p[i] < small))
 		{
-			if((singleQ->p[i] != null) && (singleQ->p[i] <= small))
-			{
-				small = singleQ->p[i];
-				max = i;
-			}
+			small = singleQ->p[i];
+			max = i;
 		}
 	}
-	// if it's not the case, the first element with the same priority will be dequeued
-	// cz elements in the beginning of the queue were inserted first
-	else
+
+	if(singleQ->rear < singleQ->front)
 	{
-		for(int i=0; i<MAX; i++)
+		for(int i=0; i<=singleQ->rear; i++)
 		{
 			if((singleQ->p[i] != null) && (singleQ->p[i] < small))
-			{
+			{	
 				small = singleQ->p[i];
 				max = i;
 			}
 		}
 	}
+	
 	//returning the index of the element with highest (ascending) priority (i.e. lowest priority number)
 	return max;
 }
 
 //to fill the gap in the queue, if an element is dequeued from the middle
+//there sould be no null elements between FRONT and REAR
 void shiftRight(int x)
 {
-	int i;
-	for(i=x; i>0; --i)
+	int i,j;
+	for(i=x; ; --i)
 	{
-		singleQ->a[i] = singleQ->a[i-1];
-		singleQ->p[i] = singleQ->p[i-1];
+		j=i-1;
+		if(i == singleQ->front) break;
+		if(i<0) i=MAX-1;
+		if(j<0) j=MAX-1;
+		singleQ->a[i] = singleQ->a[j];
+		singleQ->p[i] = singleQ->p[j];
 	}
 	singleQ->a[i] = null;
 	singleQ->p[i] = null;
