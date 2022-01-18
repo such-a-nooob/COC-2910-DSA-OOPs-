@@ -16,6 +16,7 @@ Sr no. : A2CO-36
 */
 
 #include<iostream>
+#include <iomanip>
 #include <math.h>
 
 #define SIZE 10
@@ -29,16 +30,13 @@ using namespace std;
 
 class Sequential
 {
-	int tree[MAX], depth, size;
+	int tree[MAX];
 	int visited[MAX];
 public:
 	
 	void initialise()
 	{
-		cout<<"\nEnter the maximum DEPTH of the tree : ";
-		cin>>depth;
-		size = pow(2, depth+1)-1;
-		for(int i=1; i<=size; i++)
+		for(int i=1; i<=MAX; i++)
 			tree[i] = null;
 	}
 	
@@ -62,12 +60,13 @@ public:
 
 class Linked
 {
-	int tree[MAX][3];
+	int tree[MAX][3], size;
 	int visited[MAX];
 public:
 	
 	void initialise()
 	{
+		size=0;
 		for(int i=1; i<MAX; i++)
 		{
 			tree[i][LEFT] = null;
@@ -91,7 +90,8 @@ public:
 	void preorder(int=1, int=0);
 	void inorder(int=1, int=0);
 	void postorder(int=1, int=0);
-	void Display(int);
+	void traverse(int);
+	void Display();
 	int Search(int);
 };
 
@@ -173,7 +173,7 @@ int main()
 			L.initialise();
 
 		 do{
-			cout<<"\n ---- Linked representation ----\nWHAT TO DO?\n  1. Insert\n  2. Delete\n  3. Search\n  4. Display\nSELECT ANOTHER IMPLEMENTATION (Press 0)\nYour choice? ";
+			cout<<"\n ---- Linked representation ----\nWHAT TO DO?\n  1. Insert\n  2. Delete\n  3. Search\n  4. Traverse\n  5. Display\nSELECT ANOTHER IMPLEMENTATION (Press 0)\nYour choice? ";
 			cin>>ch1;
 			switch(ch1)
 			{
@@ -213,8 +213,10 @@ int main()
 				case 4:
 					cout<<"\nTREE TRAVERSAL :\n  1. Pre-order\n  2. In-order\n  3. Post-order\nYour choice? ";
 					cin>>t;
-					L.Display(t);
+					L.traverse(t);
 					break;
+				case 5:
+					L.Display();
 				default:
 					cout<<"\nInvalid choice!\n";
 			}
@@ -228,7 +230,7 @@ int main()
 
 void Sequential::findParent(int x)
 {
-	for(int i=1; i<=size; i++)
+	for(int i=1; i<=MAX; i++)
 	{
 		if(tree[i] == x)
 		{
@@ -305,7 +307,7 @@ void Sequential::Create(int x, int p, char where)
 
 void Sequential::findLast()
 {
-	for(int i=1; i<=size; i++)
+	for(int i=1; i<=MAX; i++)
 	{
 		if(tree[i]!=null && tree[2*i] == null && tree[2*i+1] == null)
 		{
@@ -520,6 +522,7 @@ void Linked::Create(int x, int p, char where)
 	if(isEmpty())
 	{
 		tree[1][INFO]=x;
+		++size;
 		cout<<"\n"<<x<<" inserted as the root node!"<<endl;
 		return;
 	}
@@ -548,6 +551,7 @@ void Linked::Create(int x, int p, char where)
 			if(tree[loc][LEFT] == null)
 			{
 				f=1;
+				++size;
 				pos = findFree();
 				tree[pos][INFO] = x;
 				tree[loc][LEFT] = pos;
@@ -570,6 +574,7 @@ void Linked::Create(int x, int p, char where)
 			if(tree[loc][RIGHT] == null)
 			{
 				f=1;
+				++size;
 				pos = findFree();
 				tree[pos][INFO] = x;
 				tree[loc][RIGHT] = pos;
@@ -629,8 +634,6 @@ int Linked::Delete(int x)
 
 		findLast();
 		int toReplace = LeafNodes[0][I-1];
-		tree[toDelete][INFO] = tree[toReplace][INFO];
-
 		int parent = LeafNodes[1][I-1];
 
 		if(parent != null) 
@@ -641,6 +644,7 @@ int Linked::Delete(int x)
 				tree[parent][RIGHT] = null;
 		}
 
+		tree[toDelete][INFO] = tree[toReplace][INFO];
 		tree[toReplace][INFO] = null;
 
 		return 1;
@@ -706,7 +710,7 @@ void Linked::preorder(int node , int p)
 		if(tree[node][RIGHT] == null) 
 			rc = '\0';
 		else
-			rc = tree[node][RIGHT];
+			rc = tree[tree[node][RIGHT]][INFO];
 		cout<<"\nNode : "<<tree[node][INFO];
 		if(p==null)
 			cout<<"\nParent Node : NULL";
@@ -714,8 +718,8 @@ void Linked::preorder(int node , int p)
 			cout<<"\nParent Node : "<<p;
 		cout<<"\nLeft child : "<<lc<<"\tRight child : "<<rc<<endl;
 	
-		preorder(tree[node][LEFT], node);
-		preorder(tree[node][RIGHT], node);
+		preorder(tree[node][LEFT], tree[node][INFO]);
+		preorder(tree[node][RIGHT], tree[node][INFO]);
 	}
 }
 
@@ -728,7 +732,7 @@ void Linked::inorder(int node , int p)
 		if(node == null)
 			return;
 
-		inorder(tree[node][LEFT], node);
+		inorder(tree[node][LEFT], tree[node][INFO]);
 
 		int lc,rc;
 		if(tree[node][LEFT] == null) 
@@ -738,7 +742,7 @@ void Linked::inorder(int node , int p)
 		if(tree[node][RIGHT] == null) 
 			rc = '\0';
 		else
-			rc = tree[node][RIGHT];
+			rc = tree[tree[node][RIGHT]][INFO];
 		cout<<"\nNode : "<<tree[node][INFO];
 		if(p==null)
 			cout<<"\nParent Node : NULL";
@@ -746,7 +750,7 @@ void Linked::inorder(int node , int p)
 			cout<<"\nParent Node : "<<p;
 		cout<<"\nLeft child : "<<lc<<"\tRight child : "<<rc<<endl;
 	
-		inorder(tree[node][RIGHT], node);
+		inorder(tree[node][RIGHT], tree[node][INFO]);
 	}
 }
 
@@ -759,8 +763,8 @@ void Linked::postorder(int node , int p)
 		if(node == null)
 			return;
 
-		postorder(tree[node][LEFT], node);
-		postorder(tree[node][RIGHT], node);
+		postorder(tree[node][LEFT], tree[node][INFO]);
+		postorder(tree[node][RIGHT], tree[node][INFO]);
 
 		int lc,rc;
 		if(tree[node][LEFT] == null) 
@@ -770,7 +774,7 @@ void Linked::postorder(int node , int p)
 		if(tree[node][RIGHT] == null) 
 			rc = '\0';
 		else
-			rc = tree[node][RIGHT];
+			rc = tree[tree[node][RIGHT]][INFO];
 		cout<<"\nNode : "<<tree[node][INFO];
 		if(p==null)
 			cout<<"\nParent Node : NULL";
@@ -780,7 +784,7 @@ void Linked::postorder(int node , int p)
 	}
 }
 
-void Linked::Display(int ch)
+void Linked::traverse(int ch)
 {
 	for(int i=1; i<=MAX; i++)
 		visited[i] = null;
@@ -800,5 +804,17 @@ void Linked::Display(int ch)
 			break;
 		default:
 			cout<<"\nInvalid choice"<<endl;
+	}
+}
+
+void Linked::Display()
+{
+	cout<<"\nINDEX\t  LEFT\t    INFO     RIGHT\n";
+	for(int i=1; i<=size; i++)
+	{
+		cout<<setw(2)<<i;
+		for(int j=0; j<3; j++)
+			cout<<setw(10)<<tree[i][j];
+		cout<<endl;
 	}
 }
