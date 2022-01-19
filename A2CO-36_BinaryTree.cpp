@@ -19,19 +19,17 @@ Sr no. : A2CO-36
 #include <iomanip>
 #include <math.h>
 
-#define SIZE 10
+#define MAX 1000
 #define null 0
 #define LEFT 0
 #define INFO 1
 #define RIGHT 2
-#define MAX 1000
 
 using namespace std;
 
 class Sequential
 {
 	int tree[MAX];
-	int visited[MAX];
 public:
 	
 	void initialise()
@@ -39,29 +37,28 @@ public:
 		for(int i=1; i<=MAX; i++)
 			tree[i] = null;
 	}
-	
+
 	bool isEmpty()
 	{
 		if(tree[1] == null)
 			return true;
 		else
-			return false; 
+			return false;
 	}
-	void findParent(int);
-	void Create(int, int=null, char='l');
-	void findLast();
-	int Delete(int);
-	void preorder(int=1, int=0);
-	void inorder(int=1, int=0);
-	void postorder(int=1, int=0);
-	void Display(int);
-	int Search(int);
+	void Create(int=null, char='l');
+	void Delete(int);
+	void Search(int);
+	void preorder(int=1);
+	void inorder(int=1);
+	void postorder(int=1);
+	void Traverse(int);
+	void Display();
 };
 
 class Linked
 {
 	int tree[MAX][3], size;
-	int visited[MAX];
+	//int visited[MAX];
 public:
 	
 	void initialise()
@@ -74,33 +71,27 @@ public:
 			tree[i][RIGHT] = null;
 		}
 	}
-	
+
 	bool isEmpty()
 	{
 		if(tree[1][INFO] == null)
 			return true;
 		else
-			return false; 
+			return false;
 	}
-	void findParent(int, int=1, int=null);
-	int findFree();
-	void Create(int, int=null, char='l');
-	void findLast(int=1, int=null);
-	int Delete(int);
-	void preorder(int=1, int=0);
-	void inorder(int=1, int=0);
-	void postorder(int=1, int=0);
-	void traverse(int);
+	int findFree();	//finds the next free location for insertion
+	void Create(int=null, char='l');
+	int findParent(int);	//finds the parent (location) of a given node (location)
+	int findHeight(int=1);	//finds the height of the tree
+	void findRightMost(int=1, int=1);	//finds the last element at a particular level of the tree
+	void Delete(int);	
+	void Search(int);
+	void preorder(int=1);
+	void inorder(int=1);
+	void postorder(int=1);
+	void Traverse(int);
 	void Display();
-	int Search(int);
 };
-
-int flag;
-int I=0;
-int foundAt[SIZE];
-int leafNodes[SIZE];
-int FoundAt[2][SIZE];
-int LeafNodes[2][SIZE];
 
 int main()
 {
@@ -116,51 +107,52 @@ int main()
 	{
 		case 0: break;
 		case 1:	
-		//Sequential representation
-			S.initialise();			
-
+		//Sequential representation		
+		 S.initialise();
 		 do{
-			cout<<"\n ---- Sequential representation ----\nWHAT TO DO?\n  1. Insert\n  2. Delete\n  3. Search\n  4. Display\nSELECT ANOTHER IMPLEMENTATION (Press 0)\nYour choice? ";
+			cout<<"\n ---- Sequential representation ----\nWHAT TO DO?\n  1. Insert\n  2. Delete\n  3. Search\n  4. Traverse\n  5. Display\nBACK (Press 0)\nYour choice? ";
 			cin>>ch1;
 			switch(ch1)
 			{
 				case 0: break;
 				case 1:
-					cout<<"\nEnter the number to be inserted : ";
-					cin>>x;
 					if(S.isEmpty())
-						S.Create(x);
+						S.Create();
 					else
 					{
-						cout<<"What should be the parent node of "<<x<<" ? ";
+						cout<<"\nEnter the location of the parent node: ";
 						cin>>p;
-						cout<<"Where would you like to inserted? (L/R) ";
+						cout<<"Where would you like to insert - Left/Right? (Enter L/R) ";
 						cin>>where;
-						S.Create(x, p, where);
+						S.Create(p, where);
 					}
 					break;
 
 				case 2:
-					cout<<"\nEnter the number to be deleted : ";
+					cout<<"\nEnter the location of the number to be deleted : ";
 					cin>>x;
-					if(!S.Delete(x))
-						cout<<"\n"<<x<<" is not in the tree!"<<endl;
-					else
-						cout<<"\n"<<x<<" deleted!"<<endl;
+					S.Delete(x);
 					break;
 				case 3:
 					cout<<"\nEnter the number to be searched : ";
 					cin>>x;
-					flag = 0;
-					if(!S.Search(x))
-						cout<<"\n"<<x<<" is not in the tree!"<<endl;
-					else
-						cout<<"\n"<<x<<" occured "<<flag<<" times in the tree!"<<endl;
+					S.Search(x);
 					break;
 				case 4:
+					if(S.isEmpty())
+						cout<<"\nTree is empty!"<<endl;
+					else
+					{
 						cout<<"\nTREE TRAVERSAL :\n  1. Pre-order\n  2. In-order\n  3. Post-order\nYour choice? ";
 						cin>>t;
-						S.Display(t);
+						S.Traverse(t);
+					}
+					break;
+				case 5:
+					if(S.isEmpty())
+						cout<<"\nTree is empty!"<<endl;
+					else
+						S.Display();
 					break;
 				default:
 					cout<<"\nInvalid choice!\n";
@@ -170,53 +162,52 @@ int main()
 
 		case 2:
 		//Linked representation
-			L.initialise();
-
+		 L.initialise();
 		 do{
-			cout<<"\n ---- Linked representation ----\nWHAT TO DO?\n  1. Insert\n  2. Delete\n  3. Search\n  4. Traverse\n  5. Display\nSELECT ANOTHER IMPLEMENTATION (Press 0)\nYour choice? ";
+			cout<<"\n ---- Linked representation ----\nWHAT TO DO?\n  1. Insert\n  2. Delete\n  3. Search\n  4. Traverse\n  5. Display\nBACK (Press 0)\nYour choice? ";
 			cin>>ch1;
 			switch(ch1)
 			{
 				case 0: break;
 				case 1:
-					cout<<"\nEnter the number to be inserted : ";
-					cin>>x;
 					if(L.isEmpty())
-						L.Create(x);
+						L.Create();
 					else
 					{
-						cout<<"What should be the parent node of "<<x<<" ? ";
+						cout<<"\nEnter the location of the parent node: ";
 						cin>>p;
-						cout<<"Where would you like to inserted? (L/R) ";
+						cout<<"Where would you like to insert - Left/Right? (Enter L/R) ";
 						cin>>where;
-						L.Create(x, p, where);
+						L.Create(p, where);
 					}
 					break;
 
 				case 2:
-					cout<<"\nEnter the number to be deleted : ";
+					cout<<"\nEnter the location of the number to be deleted : ";
 					cin>>x;
-					if(!L.Delete(x))
-						cout<<"\n"<<x<<" is not in the tree!"<<endl;
-					else
-						cout<<"\n"<<x<<" deleted!"<<endl;
+					L.Delete(x);
 					break;
 				case 3:
 					cout<<"\nEnter the number to be searched : ";
 					cin>>x;
-					flag = 0;
-					if(!L.Search(x))
-						cout<<"\n"<<x<<" is not in the tree!"<<endl;
-					else
-						cout<<"\n"<<x<<" occured "<<flag<<" times in the tree!"<<endl;
+					L.Search(x);
 					break;
 				case 4:
-					cout<<"\nTREE TRAVERSAL :\n  1. Pre-order\n  2. In-order\n  3. Post-order\nYour choice? ";
-					cin>>t;
-					L.traverse(t);
+					if(L.isEmpty())
+						cout<<"\nTree is empty!"<<endl;
+					else
+					{
+						cout<<"\nTREE TRAVERSAL :\n  1. Pre-order\n  2. In-order\n  3. Post-order\nYour choice? ";
+						cin>>t;
+						L.Traverse(t);
+					}
 					break;
 				case 5:
-					L.Display();
+					if(L.isEmpty())
+						cout<<"\nTree is empty!"<<endl;
+					else
+						L.Display();
+					break;
 				default:
 					cout<<"\nInvalid choice!\n";
 			}
@@ -228,20 +219,12 @@ int main()
 	}while(ch!=0);
 }
 
-void Sequential::findParent(int x)
+void Sequential::Create(int p, char where)
 {
-	for(int i=1; i<=MAX; i++)
-	{
-		if(tree[i] == x)
-		{
-			foundAt[I] = i;
-			I++;
-		}
-	}
-}
+	int x;
+	cout<<"Enter the number to be inserted : ";
+	cin>>x;
 
-void Sequential::Create(int x, int p, char where)
-{
 	if(isEmpty())
 	{
 		tree[1]=x;
@@ -249,262 +232,159 @@ void Sequential::Create(int x, int p, char where)
 		return;
 	}
 
-	for(int i=0; i<SIZE; i++)
-		foundAt[i] = null;
-	I=0;
-
-	findParent(p);
-
-	if(foundAt[0] == null)
+	if(tree[p] == null)
 	{
-		cout<<"\nParent node "<<p<<" not found!"<<endl;
+		cout<<"\nLocation "<<p<<" is empty!"<<endl;
 		return;
 	}
 
-	int f=0, i=0, loc;
 	if(where == 'l' || where == 'L')
 	{
-		
-		while(foundAt[i]!=null)
+		if(tree[2*p] == null)
 		{
-			loc = foundAt[i];
-			if(tree[2*loc] == null)
-			{
-				f=1;
-				tree[2*loc] = x;
-				cout<<"\n"<<x<<" inserted to the "<<where<<" of "<<p<<endl;
-				return;
-			}
-			i++;
-		}
-		if(f == 0) 
-		{
-			cout<<"\nLeft node of "<<p<<" is already there!"<<endl;
+			tree[2*p] = x;
+			cout<<"\n"<<x<<" inserted to the LEFT of node at INDEX "<<p<<endl;
 			return;
 		}
+		else
+			cout<<"\nLEFT of the node at INDEX "<<p<<" is already there!"<<endl;
 	}
 	else if(where == 'r' || where == 'R')
 	{
-		while(foundAt[i] != null)
+		if(tree[2*p+1] == null)
 		{
-			loc = foundAt[i];
-			if(tree[2*loc+1] == null)
-			{
-				f=1;
-				tree[2*loc+1] = x;
-				cout<<"\n"<<x<<" inserted to the "<<where<<" of "<<p<<endl;
-				return;
-			}
-			i++;
-		}
-		if(f == 0) 
-		{
-			cout<<"\nRight node of "<<p<<" is already there!"<<endl;
+			tree[2*p+1] = x;
+			cout<<"\n"<<x<<" inserted to the RIGHT of node at INDEX "<<p<<endl;
 			return;
 		}
+		else 
+			cout<<"\nRIGHT of the node at INDEX "<<p<<" is already there!"<<endl;
 	}
 }
 
-void Sequential::findLast()
+void Sequential::Delete(int x)
 {
-	for(int i=1; i<=MAX; i++)
+	if(tree[x] == null)
 	{
-		if(tree[i]!=null && tree[2*i] == null && tree[2*i+1] == null)
+		cout<<"\nLocation "<<x<<" is already empty!"<<endl;
+		return;
+	}
+
+	if(tree[2*x] != null || tree[2*x+1] != null)
+	{
+		int toReplace;
+		for(int i=MAX; i>1; i--)
 		{
-			leafNodes[I] = i;
-			I++;
+			if(tree[i]!=null)
+			{
+				toReplace = i;
+				break;
+			}
 		}
-	}
-}
 
-int Sequential::Delete(int x)
-{
-	for(int i=0; i<SIZE; i++)
-		foundAt[i] = null;
-	I=0;
-	
-	findParent(x);
-	int toDelete = foundAt[0];
-
-	if(toDelete == null)
-		return 0;
-
-	if(tree[2*toDelete] != null || tree[2*toDelete+1] != null)
-	{
-		for(int i=0; i<SIZE; i++)
-			leafNodes[i] = null;
-		I=0;
-
-		findLast();
-		int toReplace = leafNodes[I-1];
-
-		tree[toDelete] = tree[toReplace];
+		tree[x] = tree[toReplace];
 		tree[toReplace] = null;
-
-		return 1;
 	}
 	else
-	{
-		tree[toDelete] = null;
-		return 1;
-	}
+		tree[x] = null;
+	cout<<"\nNode at Location "<<x<<" ( "<<tree[x]<<" ) deleted!"<<endl;
 }
 
-int Sequential::Search(int x)
+void Sequential::Search(int x)
 {
-	for(int i=0; i<SIZE; i++)
-		foundAt[i] = null;
-	I=0;
-
-	findParent(x);
-
-	if(foundAt[0] == null)
-		return 0;
-
-	int loc;
-	while(1)
+	int count=0;
+	for(int i=1; i<MAX; i++)
 	{
-		--I;
-		loc = foundAt[I];
-		++flag;
-		if(loc == 1)
-			cout<<"\nParent Node : NULL";
-		else
-			cout<<"\nParent Node : "<<tree[(loc/2)];
-		cout<<"\nLeft child : "<<tree[2*loc]<<"\tRight child : "<<tree[2*loc+1]<<endl;
-
-		if(I==0) break;
+		if(tree[i] == x)
+		{
+			++count;
+			cout<<"\nValue : "<<x<<" occured at Location : "<<i<<" \nLocation of :";
+			if(i == 1)
+				cout<<"\n-- Parent Node : NULL";
+			else
+				cout<<"\n-- Parent Node : "<<i/2<<" ( Value : "<<tree[i/2]<<" ) ";
+			cout<<"\n-- Left child : "<<2*i<<" ( Value : "<<tree[2*i]<<" ) ";
+			cout<<"\n-- Right child : "<<2*i+1<<" ( Value : "<<tree[2*i+1]<<" ) "<<endl;
+		}
 	}
-	return flag;
+
+	if(!count)
+	{
+		cout<<"\n"<<x<<" is not in the tree!"<<endl;
+		return;
+	}
+	else
+		cout<<"\n"<<x<<" occured "<<count<<" times in the tree!"<<endl;
 }
 
-void Sequential::preorder(int node, int p)
+void Sequential::preorder(int node)
 {
-	int lc,rc;
-	if(visited[node] != 1)
-	{
-		visited[node] = 1;
-		if(tree[node] == null)
-			return;
-		if(tree[2*node] == null) 
-			lc = '\0';
-		else
-			lc = tree[2*node];
-		if(tree[2*node+1] == null) 
-			rc = '\0';
-		else
-			rc = tree[2*node+1];
-		cout<<"\nNode : "<<tree[node];
-		if(p==null)
-			cout<<"\nParent Node : NULL";
-		else
-			cout<<"\nParent Node : "<<p;
-		cout<<"\nLeft child : "<<lc<<"\tRight child : "<<rc<<endl;
-	
-		preorder(2*node, tree[node]);
-		preorder(2*node+1, tree[node]);
-	}
+	if(tree[node] == null)
+		return;
+
+	cout<<tree[node]<<"\t";
+	preorder(2*node);
+	preorder(2*node+1);
 }
 
-void Sequential::inorder(int node, int p)
+void Sequential::inorder(int node)
 {
-	int lc,rc;
-	if(visited[node] != 1)
-	{
-		visited[node] = 1;
-		
-		if(tree[node] == null)
-			return;
+	if(tree[node] == null)
+		return;
 
-		inorder(2*node, tree[node]);
-
-		if(tree[2*node] == null) 
-			lc = '\0';
-		else
-			lc = tree[2*node];
-		if(tree[2*node+1] == null) 
-			rc = '\0';
-		else
-			rc = tree[2*node+1];
-		cout<<"\nNode : "<<tree[node];
-		if(p==null)
-			cout<<"\nParent Node : NULL";
-		else
-			cout<<"\nParent Node : "<<p;
-		cout<<"\nLeft child : "<<lc<<"\tRight child : "<<rc<<endl;
-	
-		inorder(2*node+1, tree[node]);
-	}
+	inorder(2*node);
+	cout<<tree[node]<<"\t";
+	inorder(2*node+1);
 }
 
-void Sequential::postorder(int node, int p)
+void Sequential::postorder(int node)
 {
-	int lc,rc;
-	if(visited[node] != 1)
-	{
-		visited[node] = 1;
-		
-		if(tree[node] == null)
-			return;
-		
-		postorder(2*node, tree[node]);
-		postorder(2*node+1, tree[node]);
-		
-		if(tree[2*node] == null) 
-			lc = '\0';
-		else
-			lc = tree[2*node];
-		if(tree[2*node+1] == null) 
-			rc = '\0';
-		else
-			rc = tree[2*node+1];
-		cout<<"\nNode : "<<tree[node];
-		if(p==null)
-			cout<<"\nParent Node : NULL";
-		else
-			cout<<"\nParent Node : "<<p;
-		cout<<"\nLeft child : "<<lc<<"\tRight child : "<<rc<<endl;
-	}
+	if(tree[node] == null)
+		return;
+
+	postorder(2*node);
+	postorder(2*node+1);
+	cout<<tree[node]<<"\t";
 }
 
-
-void Sequential::Display(int ch)
+void Sequential::Traverse(int ch)
 {
-	for(int i=1; i<=MAX; i++)
-		visited[i] = null;
 	switch(ch)
 	{
 		case 1:
-			cout<<"\n--- Pre-order traversal ---";
+			cout<<"\n--- Pre-order traversal ---\n";
 			preorder();
+			cout<<endl;
 			break;
 		case 2:
-			cout<<"\n--- In-order traversal ---";
+			cout<<"\n--- In-order traversal ---\n";
 			inorder();
+			cout<<endl;
 			break;
 		case 3:
-			cout<<"\n--- Post-order traversal ---";
+			cout<<"\n--- Post-order traversal ---\n";
 			postorder();
+			cout<<endl;
 			break;
 		default:
 			cout<<"\nInvalid choice"<<endl;
 	}
 }
 
-void Linked::findParent(int x, int node, int p)
+void Sequential::Display()
 {
-	if(node == null)
-		return;
-
-	if(tree[node][INFO] == x)
+	for(int i=1; i<MAX; i++)
 	{
-		FoundAt[0][I] = node;
-		FoundAt[1][I] = p;
-		I++;
+		if(tree[i] != null)
+		{
+			cout<<"\nNode : "<<tree[i];
+			if(i == 1)
+				cout<<"\nParent Node : NULL";
+			else
+				cout<<"\nParent Node : "<<tree[(i/2)];
+			cout<<"\nLeft child : "<<tree[2*i]<<"\tRight child : "<<tree[2*i+1]<<endl;
+		}
 	}
-
-	findParent(x, tree[node][LEFT], node);
-	findParent(x, tree[node][RIGHT], node);
 }
 
 int Linked::findFree()
@@ -517,8 +397,12 @@ int Linked::findFree()
 	return 0;
 }
 
-void Linked::Create(int x, int p, char where)
+void Linked::Create(int p, char where)
 {
+	int x;
+	cout<<"Enter the number to be inserted : ";
+	cin>>x;
+	
 	if(isEmpty())
 	{
 		tree[1][INFO]=x;
@@ -527,114 +411,93 @@ void Linked::Create(int x, int p, char where)
 		return;
 	}
 
-	for(int i=0; i<SIZE; i++)
-		FoundAt[0][i] = null;
-	I=0;
-
-	findParent(p);
-
-	if(FoundAt[0][0] == null)
+	if(p == null)
 	{
-		cout<<"\nParent node "<<p<<" not found!"<<endl;
+		cout<<"\nLocation "<<p<<" is empty!"<<endl;
 		return;
 	}
 
 	int pos;
-	int f=0, i=0, loc;
 	if(where == 'l' || where == 'L')
 	{
-		
-		while(i<I)
+		if(tree[p][LEFT] == null)
 		{
-			loc = FoundAt[0][i];
-			
-			if(tree[loc][LEFT] == null)
-			{
-				f=1;
-				++size;
-				pos = findFree();
-				tree[pos][INFO] = x;
-				tree[loc][LEFT] = pos;
-				cout<<"\n"<<x<<" inserted to the "<<where<<" of "<<p<<endl;
-				return;
-			}
-			i++;
-		}
-		if(f == 0) 
-		{
-			cout<<"\nLeft node of "<<p<<" is already there!"<<endl;
+			++size;
+			pos = findFree();
+			tree[pos][INFO] = x;
+			tree[p][LEFT] = pos;
+			cout<<"\n"<<x<<" inserted to the LEFT of node at INDEX "<<p<<endl;
 			return;
 		}
+		else
+			cout<<"\nLEFT of the node at INDEX "<<p<<" is already there!"<<endl;
 	}
 	else if(where == 'r' || where == 'R')
 	{
-		while(i<I)
+		if(tree[p][RIGHT] == null)
 		{
-			loc = FoundAt[0][i];
-			if(tree[loc][RIGHT] == null)
-			{
-				f=1;
-				++size;
-				pos = findFree();
-				tree[pos][INFO] = x;
-				tree[loc][RIGHT] = pos;
-				cout<<"\n"<<x<<" inserted to the "<<where<<" of "<<p<<endl;
-				return;
-			}
-			i++;
-		}
-		if(f == 0) 
-		{
-			cout<<"\nRight node of "<<p<<" is already there!"<<endl;
+			++size;
+			pos = findFree();
+			tree[pos][INFO] = x;
+			tree[p][RIGHT] = pos;
+			cout<<"\n"<<x<<" inserted to the RIGHT of node at INDEX "<<p<<endl;
 			return;
 		}
+		else 
+			cout<<"\nRIGHT of the node at INDEX "<<p<<" is already there!"<<endl;		
 	}
 }
 
-void Linked::findLast(int node, int p)
+int Linked::findParent(int x)
+{
+	for(int i=1; i<=size; i++)
+	{
+		if(tree[i][LEFT] == x || tree[i][RIGHT] == x)
+			return i;
+	}
+	return 0;
+}
+
+int Linked::findHeight(int node)
+{
+	if(node == null)
+		return 0;
+
+	int hleft = findHeight(tree[node][LEFT]);
+	int hright = findHeight(tree[node][RIGHT]);
+	if(hleft > hright)
+		return hleft+1;
+	else
+		return hright+1;
+}
+
+int toReplace;
+void Linked::findRightMost(int node, int l)
 {
 	if(node==null)
 		return;
 	
-	if(tree[node][INFO]!=null && tree[node][LEFT] == null && tree[node][RIGHT] == null)
-	{
-		LeafNodes[0][I] = node;
-		LeafNodes[1][I] = p;
-		I++;
-	}
+	if(l == 1)
+		toReplace = node;
 
-	findLast(tree[node][LEFT], node);
-	findLast(tree[node][RIGHT], node);
-	
+	findRightMost(tree[node][LEFT], l-1);
+	findRightMost(tree[node][RIGHT], l-1);	
 }
 
-int Linked::Delete(int x)
+void Linked::Delete(int x)
 {
-	for(int i=0; i<SIZE; i++)
+	if(tree[x][INFO] == null)
 	{
-		FoundAt[0][i] = null;
-		FoundAt[1][i] = null;
+		cout<<"\nLocation "<<x<<" is already empty!"<<endl;
+		return;
 	}
-	I=0;
-	
-	findParent(x);
-	int toDelete = FoundAt[0][0];
 
-	if(toDelete == null)
-		return 0;
-
-	if(tree[toDelete][LEFT] != null || tree[toDelete][RIGHT] != null)
+	if(tree[x][LEFT] != null || tree[x][RIGHT] != null)
 	{
-		for(int i=0; i<SIZE; i++)
-		{
-			LeafNodes[0][i] = null;
-			LeafNodes[1][i] = null;
-		}
-		I=0;
-
-		findLast();
-		int toReplace = LeafNodes[0][I-1];
-		int parent = LeafNodes[1][I-1];
+		toReplace = 0; 
+		int h = findHeight();
+		findRightMost(h);
+		int parent = findParent(toReplace);
 
 		if(parent != null) 
 		{
@@ -644,163 +507,99 @@ int Linked::Delete(int x)
 				tree[parent][RIGHT] = null;
 		}
 
-		tree[toDelete][INFO] = tree[toReplace][INFO];
-		tree[toReplace][INFO] = null;
+		cout<<"\nNode at Location "<<x<<" ( "<<tree[x][INFO]<<" ) deleted!"<<endl;
 
-		return 1;
+		tree[x][INFO] = tree[toReplace][INFO];
+		tree[toReplace][INFO] = null;
 	}
 	else
 	{
-		int parent = FoundAt[1][0];
-		if(tree[tree[parent][LEFT]][INFO] == tree[toDelete][INFO])
+		int parent = findParent(x);
+		if(tree[tree[parent][LEFT]][INFO] == tree[x][INFO])
 			tree[parent][LEFT] = null;
 		else 
 			tree[parent][RIGHT] = null;
 
-		tree[toDelete][INFO] = null;
-		return 1;
+		cout<<"\nNode at Location "<<x<<" ( "<<tree[x][INFO]<<" ) deleted!"<<endl;
+		tree[x][INFO] = null;
 	}
 }
 
-int Linked::Search(int x)
+void Linked::Search(int x)
 {
-	for(int i=0; i<SIZE; i++)
+	int count=0;
+	for(int i=1; i<size; i++)
 	{
-		FoundAt[0][i] = null;
-		FoundAt[1][i] = null;
+		if(tree[i][INFO] == x)
+		{
+			++count;
+			cout<<"\nValue : "<<x<<" occured at Location : "<<i<<" \nLocation of :";
+			if(i == 1)
+				cout<<"\n-- Parent Node : NULL";
+			else
+				cout<<"\n-- Parent Node : "<<findParent(i)<<" ( Value : "<<tree[findParent(i)][INFO]<<" )";
+			cout<<"\n-- Left child : "<<tree[i][LEFT]<<" ( Value : "<<tree[tree[i][LEFT]][INFO]<<" )";
+			cout<<"\t-- Right child : "<<tree[i][RIGHT]<<" ( Value : "<<tree[tree[i][RIGHT]][INFO]<<" )"<<endl;
+		}
 	}
-	I=0;
 
-	findParent(x);
-
-	if(FoundAt[0][0] == null)
-		return 0;
-
-	int loc;
-	while(1)
+	if(!count)
 	{
-		--I;
-		loc = FoundAt[0][I];
-		++flag;
-		if(loc == 1)
-			cout<<"\nParent Node : NULL";
-		else
-			cout<<"\nParent Node : "<<tree[FoundAt[1][I]][INFO];
-		cout<<"\nLeft child : "<<tree[tree[loc][LEFT]][INFO]<<"\tRight child : "<<tree[tree[loc][RIGHT]][INFO]<<endl;
-
-		if(I==0) break;
+		cout<<"\n"<<x<<" is not in the tree!"<<endl;
+		return;
 	}
-	return flag;
+	else
+		cout<<"\n"<<x<<" occured "<<count<<" times in the tree!"<<endl;
 }
 
-void Linked::preorder(int node , int p)
+void Linked::preorder(int node)
 {
-	if(visited[node]!=1)
-	{
-		visited[node]=1;
-		
-		if(node == null)
-			return;
+	if(node == null)
+		return;
 
-		int lc,rc;
-		if(tree[node][LEFT] == null) 
-			lc = '\0';
-		else
-			lc = tree[tree[node][LEFT]][INFO];
-		if(tree[node][RIGHT] == null) 
-			rc = '\0';
-		else
-			rc = tree[tree[node][RIGHT]][INFO];
-		cout<<"\nNode : "<<tree[node][INFO];
-		if(p==null)
-			cout<<"\nParent Node : NULL";
-		else
-			cout<<"\nParent Node : "<<p;
-		cout<<"\nLeft child : "<<lc<<"\tRight child : "<<rc<<endl;
-	
-		preorder(tree[node][LEFT], tree[node][INFO]);
-		preorder(tree[node][RIGHT], tree[node][INFO]);
-	}
+	cout<<tree[node][INFO]<<"\t";
+	preorder(tree[node][LEFT]);
+	preorder(tree[node][RIGHT]);
 }
 
-void Linked::inorder(int node , int p)
+void Linked::inorder(int node)
 {
-	if(visited[node]!=1)
-	{
-		visited[node]=1;
-		
-		if(node == null)
-			return;
+	if(node == null)
+		return;
 
-		inorder(tree[node][LEFT], tree[node][INFO]);
-
-		int lc,rc;
-		if(tree[node][LEFT] == null) 
-			lc = '\0';
-		else
-			lc = tree[tree[node][LEFT]][INFO];
-		if(tree[node][RIGHT] == null) 
-			rc = '\0';
-		else
-			rc = tree[tree[node][RIGHT]][INFO];
-		cout<<"\nNode : "<<tree[node][INFO];
-		if(p==null)
-			cout<<"\nParent Node : NULL";
-		else
-			cout<<"\nParent Node : "<<p;
-		cout<<"\nLeft child : "<<lc<<"\tRight child : "<<rc<<endl;
-	
-		inorder(tree[node][RIGHT], tree[node][INFO]);
-	}
+	inorder(tree[node][LEFT]);
+	cout<<tree[node][INFO]<<"\t";
+	inorder(tree[node][RIGHT]);
 }
 
-void Linked::postorder(int node , int p)
+void Linked::postorder(int node)
 {
-	if(visited[node]!=1)
-	{
-		visited[node]=1;
-		
-		if(node == null)
-			return;
+	if(node == null)
+		return;
 
-		postorder(tree[node][LEFT], tree[node][INFO]);
-		postorder(tree[node][RIGHT], tree[node][INFO]);
-
-		int lc,rc;
-		if(tree[node][LEFT] == null) 
-			lc = '\0';
-		else
-			lc = tree[tree[node][LEFT]][INFO];
-		if(tree[node][RIGHT] == null) 
-			rc = '\0';
-		else
-			rc = tree[tree[node][RIGHT]][INFO];
-		cout<<"\nNode : "<<tree[node][INFO];
-		if(p==null)
-			cout<<"\nParent Node : NULL";
-		else
-			cout<<"\nParent Node : "<<p;
-		cout<<"\nLeft child : "<<lc<<"\tRight child : "<<rc<<endl;
-	}
+	postorder(tree[node][LEFT]);
+	postorder(tree[node][RIGHT]);
+	cout<<tree[node][INFO]<<"\t";
 }
 
-void Linked::traverse(int ch)
+void Linked::Traverse(int ch)
 {
-	for(int i=1; i<=MAX; i++)
-		visited[i] = null;
 	switch(ch)
 	{
 		case 1:
-			cout<<"\n--- Pre-order traversal ---";
+			cout<<"\n--- Pre-order traversal ---"<<endl;
 			preorder();
+			cout<<endl;
 			break;
 		case 2:
-			cout<<"\n--- In-order traversal ---";
+			cout<<"\n--- In-order traversal ---"<<endl;
 			inorder();
+			cout<<endl;
 			break;
 		case 3:
-			cout<<"\n--- Post-order traversal ---";
+			cout<<"\n--- Post-order traversal ---"<<endl;
 			postorder();
+			cout<<endl;
 			break;
 		default:
 			cout<<"\nInvalid choice"<<endl;
