@@ -282,12 +282,16 @@ void Sequential::Delete(int x)
 			}
 		}
 
+		cout<<"\nNode at Location "<<x<<" ( "<<tree[x]<<" ) deleted!"<<endl;
+
 		tree[x] = tree[toReplace];
 		tree[toReplace] = null;
 	}
 	else
+	{
+		cout<<"\nNode at Location "<<x<<" ( "<<tree[x]<<" ) deleted!"<<endl;
 		tree[x] = null;
-	cout<<"\nNode at Location "<<x<<" ( "<<tree[x]<<" ) deleted!"<<endl;
+	}
 }
 
 void Sequential::Search(int x)
