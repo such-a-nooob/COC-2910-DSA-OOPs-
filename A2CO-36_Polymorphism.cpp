@@ -126,7 +126,7 @@ public:
 
 int main()
 {
-	Shape *shape[4];
+    Shape *shape[4];
 
     for(int i=0; i<4; i++)
     {
@@ -138,27 +138,27 @@ int main()
     	}
     	else if(i == 1)
     	{
-   			cout<<"\n---Rectangle---";
-   			Rectangle R;
-   			shape[i] = &R;
-   		}
-   		else if(i == 2)
-   		{
-   			cout<<"\n---Square---";
-   			Square S;
-   			shape[i] = &S;
-   		}
-   		else
-   		{
-   			cout<<"\n---Triangle---";
-   			Triangle T;
-   			shape[i] = &T;
-  		}
+   		cout<<"\n---Rectangle---";
+   		Rectangle R;
+   		shape[i] = &R;
+   	}
+   	else if(i == 2)
+   	{
+   		cout<<"\n---Square---";
+   		Square S;
+   		shape[i] = &S;
+   	}
+   	else
+   	{
+   		cout<<"\n---Triangle---";
+   		Triangle T;
+   		shape[i] = &T;
+  	}
 
     	shape[i]->calcArea();
-	    shape[i]->calcPerimeter();
-	    shape[i]->display();
-	}
+        shape[i]->calcPerimeter();
+	shape[i]->display();
+    }
 
     cout<<endl;
     return 0;
