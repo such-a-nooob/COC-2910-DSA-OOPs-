@@ -11,6 +11,7 @@ Sr no. : A2CO-36
 */
 
 #include <iostream>
+#include <cmath>
 #define PI 3.14
 using namespace std;
 
@@ -25,7 +26,7 @@ public:
 		perimeter = 0.0;
 	}
 
-    void display()
+   	void display()
     {
     	cout<<"\nArea : "<<area<<" sq. units\nPerimeter : "<<perimeter<<" units"<<endl;
     }
@@ -103,62 +104,71 @@ public:
 class Triangle : public Shape
 {
 protected:
-	float a, b, c, h;
+	float a, b, c, s;
 public:
 	Triangle()
 	{
 		cout<<"\nEnter the sides of the Triangle\nA : "; cin>>a;
 		cout<<"B : "; cin>>b;
 		cout<<"C : "; cin>>c;
-		cout<<"Enter the height of the Triangle : "; cin>>h;    	
 	}
 
 	void calcArea()
 	{
-		area = 0.5 * b * h;
+		if(a+b>c && b+c>a && c+a>b)
+		{
+			s = (a+b+c)/2;
+			area = sqrt(s*(s-a)*(s-b)*(s-c));
+		}
+		else
+			printf("\nTriangle can't be formed with the given sides!!\n");
 	}
 
 	void calcPerimeter()
 	{
-		perimeter = a + b + c;
+		if(a+b>c && b+c>a && c+a>b)
+			perimeter = a + b + c;
 	}
 };
 
 int main()
 {
-    Shape *shape[4];
-
-    for(int i=0; i<4; i++)
-    {
-    	if(i == 0) 
-    	{
+	Shape *shape[5];
+	int ch;
+	
+	cout<<"\n1. Circle\n2. Rectangle\n3. Square\n4. Triangle\nYour choice? ";
+	cin>>ch;
+	
+	if(ch == 1)  
+	{
     		cout<<"\n---Circle---";
     		Circle C;
-    		shape[i] = &C;
+    		shape[ch] = &C;
     	}
-    	else if(i == 1)
+    	else if(ch == 2)
     	{
    		cout<<"\n---Rectangle---";
    		Rectangle R;
-   		shape[i] = &R;
+   		shape[ch] = &R;
    	}
-   	else if(i == 2)
+   	else if(ch == 3)
    	{
    		cout<<"\n---Square---";
    		Square S;
-   		shape[i] = &S;
+   		shape[ch] = &S;
    	}
-   	else
+   	else if(ch == 4)
    	{
    		cout<<"\n---Triangle---";
    		Triangle T;
-   		shape[i] = &T;
+   		shape[ch] = &T;
   	}
-
-    	shape[i]->calcArea();
-        shape[i]->calcPerimeter();
-	shape[i]->display();
-    }
+	else 
+		cout<<"\nInvalid choice!\n";
+	
+	shape[ch]->calcArea();
+	shape[ch]->calcPerimeter();
+	shape[ch]->display();
 
     cout<<endl;
     return 0;
