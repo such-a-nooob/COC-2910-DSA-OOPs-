@@ -68,7 +68,10 @@ class Triangle extends Shape
 		a = sc.nextDouble();
 		b = sc.nextDouble();
 		c = sc.nextDouble();
-		System.out.println("\nPerimeter of Triangle : "+df.format(a+b+c)+" units");
+		if(a+b>c && b+c>a && c+a>b)
+			System.out.println("\nPerimeter of Triangle : "+df.format(a+b+c)+" units");
+		else
+			System.out.println("This Triangle doesn't exist!"); 
 	}
 }
 
