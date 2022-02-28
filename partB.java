@@ -71,7 +71,7 @@ class Triangle extends Shape
 		if(a+b>c && b+c>a && c+a>b)
 			System.out.println("\nPerimeter of Triangle : "+df.format(a+b+c)+" units");
 		else
-			System.out.println("This Triangle doesn't exist!"); 
+			System.out.println("CAN'T CONSTRUCT A TRIANGLE WITH THE GIVEN SIDES!!");
 	}
 }
 
