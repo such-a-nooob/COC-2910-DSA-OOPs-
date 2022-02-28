@@ -68,7 +68,6 @@ public class partA
 	private static final DecimalFormat df = new DecimalFormat("0.00");
 	public static void main(String[] args) 
 	{
-		try{
 		System.out.println("\nPART (A) :");
 		Scanner sc = new Scanner (System.in);
 		AreaPeri ap = new AreaPeri();
@@ -84,64 +83,93 @@ public class partA
 
 			if(ch==1)	//Triangle
 			{
-				System.out.print("\nEnter the sides of the Triangle : ");
-				int a = sc.nextInt();
-				int b = sc.nextInt();
-				int c = sc.nextInt();
-
-				if(a<=0 || b<=0 || c<=0) 
-					throw new ArithmeticException(); 
-
-				if(ap.calcArea(a,b,c)!=0)
+				try
 				{
+					System.out.print("\nEnter the sides of the Triangle : ");
+					int a = sc.nextInt();
+					int b = sc.nextInt();
+					int c = sc.nextInt();
+
+					if(a<=0 || b<=0 || c<=0) 
+						throw new IllegalArgumentException(); 
+				
+					if(ap.calcArea(a,b,c)==0)
+						throw new ArithmeticException();
+
 					System.out.println("Area : "+df.format(ap.calcArea(a,b,c))+" units");
-					System.out.println("Perimeter : "+df.format(ap.calcPeri(a,b,c))+" units");
+					System.out.println("Perimeter : "+df.format(ap.calcPeri(a,b,c))+" units"); 
 				}
-				else
-					System.out.println("This Triangle doesn't exist!"); 
+				catch(IllegalArgumentException e)
+				{
+					System.out.println("SIDES OF THE POLYGON SHOULD BE GREATER THAN 0!!");
+				}
+				catch(ArithmeticException e)
+				{
+					System.out.println("CAN'T CONSTRUCT A TRIANGLE WITH THE GIVEN SIDES!!");
+				}
 			}
+
 			else if(ch==2)	//Square
 			{
-				System.out.print("\nEnter the side of the Square : ");
-				double a = sc.nextDouble();
+				try
+				{
+					System.out.print("\nEnter the side of the Square : ");
+					double a = sc.nextDouble();
 
-				if(a<=0) 
-					throw new ArithmeticException();
-				
-				System.out.println("Area : "+df.format(ap.calcArea(a))+" units");
-				System.out.println("Perimeter : "+df.format(ap.calcPeri(a))+" units");
+					if(a<=0) 
+						throw new IllegalArgumentException();
+
+					System.out.println("Area : "+df.format(ap.calcArea(a))+" units");
+					System.out.println("Perimeter : "+df.format(ap.calcPeri(a))+" units");
+				}
+				catch(IllegalArgumentException e)
+				{
+					System.out.println("SIDES OF THE POLYGON SHOULD BE GREATER THAN 0!!");
+				}
 			}	
+
 			else if(ch==3)	//Rectangle
 			{
-				System.out.print("\nEnter the length and breadth of the Rectangle : ");
-				int a = sc.nextInt();
-				int b = sc.nextInt();
+				try
+				{
+					System.out.print("\nEnter the length and breadth of the Rectangle : ");
+					int a = sc.nextInt();
+					int b = sc.nextInt();
 
-				if(a<=0 || b<=0) 
-					throw new ArithmeticException();
-				
-				System.out.println("Area : "+df.format(ap.calcArea(a,b))+" units");
-				System.out.println("Perimeter : "+df.format(ap.calcPeri(a,b))+" units");
+					if(a<=0 || b<=0) 
+						throw new IllegalArgumentException();
+
+					System.out.println("Area : "+df.format(ap.calcArea(a,b))+" units");
+					System.out.println("Perimeter : "+df.format(ap.calcPeri(a,b))+" units");
+				}
+				catch(IllegalArgumentException e)
+				{
+					System.out.println("SIDES OF THE POLYGON SHOULD BE GREATER THAN 0!!");
+				}
 			}
+
 			else if(ch==4)	//Hexagon
 			{
-				System.out.print("\nEnter the side of the regular Hexagon : ");
-				int a = sc.nextInt();
+				try
+				{
+					System.out.print("\nEnter the side of the regular Hexagon : ");
+					int a = sc.nextInt();
 
-				if(a<=0) 
-					throw new ArithmeticException();
-				
-				System.out.println("Area : "+df.format(ap.calcArea(a))+" units");
-				System.out.println("Perimeter : "+df.format(ap.calcPeri(a))+" units");
+					if(a<=0) 
+						throw new IllegalArgumentException();
+
+					System.out.println("Area : "+df.format(ap.calcArea(a))+" units");
+					System.out.println("Perimeter : "+df.format(ap.calcPeri(a))+" units");
+				}
+				catch(IllegalArgumentException e)
+				{
+					System.out.println("SIDES OF THE POLYGON SHOULD BE GREATER THAN 0!!");
+				}
 			}
+
 			else
 				System.out.println("\nInvalid Choice!"); 
 
 		}while(ch!=0);
-		}
-		catch(ArithmeticException e)
-		{
-			System.out.println("SIDES OF THE POLYGON SHOULD BE GREATER THAN 0!!");
-		}
 	}
 }
