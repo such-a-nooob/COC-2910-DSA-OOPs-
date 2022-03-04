@@ -39,17 +39,17 @@ class primeComposite
 	private int height;	//height of the frame
 	private int score;	
 	private Random r;
-    private int randomNum;
+    	private int randomNum;
 
-    //initialising the above mentioned members using constructor
-    public primeComposite(int w, int h)
-    {
-    	frame = new JFrame();
-    	panel = new JPanel(new GridLayout(4,1,0,30));
-    	panelN = new JPanel();
-    	panelB = new JPanel(new GridLayout(1,2));
-    	panelS = new JPanel();
-    	panelR = new JPanel();
+    	//initialising the above mentioned members using constructor
+    	public primeComposite(int w, int h)
+    	{
+    		frame = new JFrame();
+    		panel = new JPanel(new GridLayout(4,1,0,30));
+    		panelN = new JPanel();
+    		panelB = new JPanel(new GridLayout(1,2));
+    		panelS = new JPanel();
+    		panelR = new JPanel();
 		label = new JLabel("SCORE : ");
 		lbNumber = new JLabel();
 		lbScore = new JLabel();
@@ -60,13 +60,13 @@ class primeComposite
 		height = h;
 		score = 0;
 		r = new Random();
-    	randomNum = r.nextInt(100);
-    }
+    		randomNum = r.nextInt(100);
+    	}
 
-    //setting up the components in the frame
-    public void setupGUI() 
-    {
-    	frame.setSize(width, height);	//setting the size of the frame
+    	//setting up the components in the frame
+    	public void setupGUI() 
+    	{
+    		frame.setSize(width, height);	//setting the size of the frame
 		frame.setTitle("The Prime Game");	//setting the title of the frame
 
 		//set the initial text for the Number and Score label
@@ -93,26 +93,26 @@ class primeComposite
 		//call function 'primeAction' when 'Prime' button is clicked
 		bPrime.addActionListener(new ActionListener() 
 		{
-            public void actionPerformed(ActionEvent evt) 
-            {
-                primeAction();
-            }
-        });
+			public void actionPerformed(ActionEvent evt) 
+			{
+				primeAction();
+			}
+        	});
 
-        JPanel cb = new JPanel();
+        	JPanel cb = new JPanel();
 		cb.add(bComposite);
 		panelB.add(cb);
 		//calls function 'compositeAction' when 'No Prime' button is clicked
 		bComposite.addActionListener(new ActionListener() 
 		{
-            public void actionPerformed(ActionEvent evt) 
-            {
-                compositeAction();
-            }
-        });
-        panel.add(panelB);
+			public void actionPerformed(ActionEvent evt) 
+			{
+				compositeAction();
+			}
+		});
+        	panel.add(panelB);
 
-        //adding lebels to show the Scores in the row 3 of the JPanel 'panel' 
+        	//adding lebels to show the Scores in the row 3 of the JPanel 'panel' 
 		panelS.add(label);
 		panelS.add(lbScore);
 		panel.add(panelS);
@@ -127,14 +127,14 @@ class primeComposite
 		//calls function 'resetAction' when 'Reset' button is clicked
 		bReset.addActionListener(new ActionListener() 
 		{
-            public void actionPerformed(ActionEvent evt) 
-            {
-                resetAction();
-            }
-        });
+        		public void actionPerformed(ActionEvent evt) 
+            		{
+                		resetAction();
+            		}
+        	});
 		panel.add(panelR);
 
-        frame.add(panel);	//add the panel to the frame
+        	frame.add(panel);	//add the panel to the frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//set the frame close operation
 		frame.setVisible(true);	//set the visibility to true to display the components in the frame
 	}
