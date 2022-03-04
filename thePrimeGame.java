@@ -1,11 +1,11 @@
 /*
 COC2030 ASSIGNMENT
 --Create a Graphical-User-Interface (GUI) in Java--
-1. Create a GUI of your choice in Java.
-2. It should include a window (frame and panel) and some components.
-3. Try to incorporate event handling by creating an event source and listeners.
-4. Try to write comments for each component (to explain its purpose and action for the related events)
-5. Upload source code and screenshots of your program.
+	1. Create a GUI of your choice in Java.
+	2. It should include a window (frame and panel) and some components.
+	3. Try to incorporate event handling by creating an event source and listeners.
+	4. Try to write comments for each component (to explain its purpose and action for the related events)
+	5. Upload source code and screenshots of your program.
 
 
 Name : Muniba Rahman
@@ -27,46 +27,46 @@ class primeComposite
 	private JPanel panelN;	//panel to store the number label
 	private JPanel panelB;	//panel to store the Prime and Not Prime buttons
 	private JPanel panelS;	//panel to store the score labels
-	private JPanel panelR;	//panel to store the Reset button
+	private JPanel panelR;	//panel to store the EndGame button
 	private JLabel label;
 	private JLabel lbNumber;	//label to show a random number
 	private JLabel lbScore;	//label to show the score
 	private JButton bPrime;	
 	private JButton bComposite;
-	private JButton bReset;
+	private JButton bEndGame;
 
 	private int width;	//width of the frame
 	private int height;	//height of the frame
 	private int score;	
 	private Random r;
-    	private int randomNum;
+	private int randomNum;
 
-    	//initialising the above mentioned members using constructor
-    	public primeComposite(int w, int h)
-    	{
-    		frame = new JFrame();
-    		panel = new JPanel(new GridLayout(4,1,0,30));
-    		panelN = new JPanel();
-    		panelB = new JPanel(new GridLayout(1,2));
-    		panelS = new JPanel();
-    		panelR = new JPanel();
+	//initialising the above mentioned members using constructor
+	public primeComposite(int w, int h)
+	{
+		frame = new JFrame();
+		panel = new JPanel(new GridLayout(4,1,0,30));
+		panelN = new JPanel();
+		panelB = new JPanel(new GridLayout(1,2));
+		panelS = new JPanel();
+		panelR = new JPanel();
 		label = new JLabel("SCORE : ");
 		lbNumber = new JLabel();
 		lbScore = new JLabel();
 		bComposite = new JButton("No Prime"); 
 		bPrime = new JButton("Prime");
-		bReset = new JButton("Reset");
+		bEndGame = new JButton("End Game");
 		width = w;
 		height = h;
 		score = 0;
 		r = new Random();
-    		randomNum = r.nextInt(100);
-    	}
+		randomNum = r.nextInt(100);
+	}
 
-    	//setting up the components in the frame
-    	public void setupGUI() 
-    	{
-    		frame.setSize(width, height);	//setting the size of the frame
+	//setting up the components in the frame
+	public void setupGUI() 
+	{
+		frame.setSize(width, height);	//setting the size of the frame
 		frame.setTitle("The Prime Game");	//setting the title of the frame
 
 		//set the initial text for the Number and Score label
@@ -97,9 +97,9 @@ class primeComposite
 			{
 				primeAction();
 			}
-        	});
+		});
 
-        	JPanel cb = new JPanel();
+		JPanel cb = new JPanel();
 		cb.add(bComposite);
 		panelB.add(cb);
 		//calls function 'compositeAction' when 'No Prime' button is clicked
@@ -110,31 +110,31 @@ class primeComposite
 				compositeAction();
 			}
 		});
-        	panel.add(panelB);
+		panel.add(panelB);
 
-        	//adding lebels to show the Scores in the row 3 of the JPanel 'panel' 
+		//adding lebels to show the Scores in the row 3 of the JPanel 'panel' 
 		panelS.add(label);
 		panelS.add(lbScore);
 		panel.add(panelS);
 
-		//adding 'Reset' button to the row 4 of the JPanel 'panel' 
+		//adding 'EndGame' button to the row 4 of the JPanel 'panel' 
 		JPanel jp = new JPanel(new GridLayout(1,4));
 		jp.add(new JLabel(""));
 		jp.add(new JLabel(""));
-		jp.add(new JLabel(""));
-		jp.add(bReset);
+		//jp.add(new JLabel(""));
+		jp.add(bEndGame);
 		panelR.add(jp);
-		//calls function 'resetAction' when 'Reset' button is clicked
-		bReset.addActionListener(new ActionListener() 
+		//calls function 'endGameAction' when 'EndGame' button is clicked
+		bEndGame.addActionListener(new ActionListener() 
 		{
-        		public void actionPerformed(ActionEvent evt) 
-            		{
-                		resetAction();
-            		}
-        	});
+			public void actionPerformed(ActionEvent evt) 
+			{
+				endGameAction();
+			}
+		});
 		panel.add(panelR);
 
-        	frame.add(panel);	//add the panel to the frame
+		frame.add(panel);	//add the panel to the frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//set the frame close operation
 		frame.setVisible(true);	//set the visibility to true to display the components in the frame
 	}
@@ -162,8 +162,7 @@ class primeComposite
 		}
 		else //(Answer is incorrect)
 		{
-			JOptionPane.showMessageDialog(frame, "GAME OVER!\nYour Score : "+score);	//show a Message dialog box with scores
-			resetAction();	//reset the game
+			endGameAction();	//end the game
 		}
 	}
 
@@ -189,15 +188,15 @@ class primeComposite
 		}
 		else	//(Answer is incorrect)
 		{
-			JOptionPane.showMessageDialog(frame, "GAME OVER!\nYour Score : "+score);
-			resetAction();
+			endGameAction();
 		}
 	}
 
-	//Operations to be performed when 'Reset' button is clicked
-	//Resets the Game
-	public void resetAction()
+	//Operations to be performed when 'EndGame' button is clicked
+	//end the Game
+	public void endGameAction()
 	{
+		JOptionPane.showMessageDialog(frame, "GAME OVER!\nYour Score : "+score);	//show a Message dialog box with scores
 		score = 0;	//set the score to 0
 		lbScore.setText(String.valueOf(score));	//show the new score
 		randomNum = r.nextInt(100);	//generate a new random number
