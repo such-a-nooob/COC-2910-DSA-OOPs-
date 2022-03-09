@@ -17,17 +17,13 @@ Sr no. : A2CO-36
 import java.util.*;
 import javax.swing.*;
 import java.awt.*; //import all of the java.awt classes but does not import classes under java.awt.event
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.awt.event.*;
 
 class primeComposite
 {
 	private JFrame frame;
 	private JPanel panel;
-	private JPanel panelN;	//panel to store the number label
-	private JPanel panelB;	//panel to store the Prime and Not Prime buttons
-	private JPanel panelS;	//panel to store the score labels
-	private JPanel panelR;	//panel to store the EndGame button
+	private JPanel numPanel;	//panel to store the random number number
 	private JLabel label;
 	private JLabel lbNumber;	//label to show a random number
 	private JLabel lbScore;	//label to show the score
@@ -45,11 +41,8 @@ class primeComposite
 	public primeComposite(int w, int h)
 	{
 		frame = new JFrame();
-		panel = new JPanel(new GridLayout(4,1,0,30));
-		panelN = new JPanel();
-		panelB = new JPanel(new GridLayout(1,2));
-		panelS = new JPanel();
-		panelR = new JPanel();
+		panel = new JPanel();
+		numPanel = new JPanel();
 		label = new JLabel("SCORE : ");
 		lbNumber = new JLabel();
 		lbScore = new JLabel();
@@ -60,37 +53,39 @@ class primeComposite
 		height = h;
 		score = 0;
 		r = new Random();
-		randomNum = r.nextInt(100);
+		randomNum = r.nextInt(350);
 	}
 
 	//setting up the components in the frame
 	public void setupGUI() 
 	{
-		frame.setSize(width, height);	//setting the size of the frame
-		frame.setTitle("The Prime Game");	//setting the title of the frame
+		frame.setSize(width, height);	//sets the size of the frame
+		frame.setTitle("The Prime Game");	//sets the title of the frame
 
-		//set the initial text for the Number and Score label
-		lbNumber.setText(String.valueOf(randomNum));	
-		lbScore.setText(String.valueOf(score));
 
-		//setting the fonts 
-		lbNumber.setFont(new Font("Calibri", Font.BOLD, 72));
-		lbScore.setFont(new Font("Calibri", Font.BOLD, 18));
-		label.setFont(new Font("Calibri", Font.BOLD, 18));
-		bComposite.setFont(new Font("Calibri", Font.ITALIC, 16));
-		bPrime.setFont(new Font("Calibri", Font.ITALIC, 16));
+		//removing the default layout for JPanel 'panel' 
+		//so that we can customize the size and location of each component on our choice
+		panel.setLayout(null);	
 
-		//adding Number lebel to the row 1 of the JPanel 'panel' 
-		panelN.add(lbNumber);
-		panel.add(panelN);
+		
+		//setting Number lebel in the panel
 
-		//adding 'Prime' and 'No Prime' buttons to the row 2 of the JPanel 'panel' 
-		/*(adding buttons to the JPanel 'pb' and 'cb' resp. 
-		  and then in JPanel 'panelB' to maintain size of the buttons in the grid layout)*/
-		JPanel pb = new JPanel();
-		pb.add(bPrime);
-		panelB.add(pb);	
-		//call function 'primeAction' when 'Prime' button is clicked
+		lbNumber.setFont(new Font("Calibri", Font.BOLD, 75));	//sets font of the random number
+		lbNumber.setText(String.valueOf(randomNum));	//sets an initial random number to display 
+		numPanel.setSize(320,90);	//sets the size of the number panel
+		numPanel.setLocation(-1,25);	//sets the location(co-ordinates) of the number panel
+		numPanel.add(lbNumber);	
+		panel.add(numPanel);	//adds the number panel to the main panel
+		
+
+		//setting 'Prime' and 'No Prime' buttons in the panel 
+
+		bPrime.setFont(new Font("Calibri", Font.ITALIC, 16));	//sets font of the text on the button 'Prime'
+		bPrime.setSize(100, 30);	//sets the size of the 'Prime' button
+		bPrime.setLocation(30, 130);	//sets the location(co-ordinates) of the 'Prime' button
+		panel.add(bPrime);	//adds the 'Prime' button to the panel
+
+		//calls function 'primeAction' when 'Prime' button is clicked
 		bPrime.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent evt) 
@@ -99,9 +94,11 @@ class primeComposite
 			}
 		});
 
-		JPanel cb = new JPanel();
-		cb.add(bComposite);
-		panelB.add(cb);
+		bComposite.setFont(new Font("Calibri", Font.ITALIC, 16));	//sets font of the text on the button 'No Prime'
+		bComposite.setSize(100, 30);	//sets the size of the 'No Prime' button
+		bComposite.setLocation(175, 130);	//sets the location(co-ordinates) of the 'No Prime' button
+		panel.add(bComposite);	//adds the 'No Prime' button to the panel
+
 		//calls function 'compositeAction' when 'No Prime' button is clicked
 		bComposite.addActionListener(new ActionListener() 
 		{
@@ -110,20 +107,28 @@ class primeComposite
 				compositeAction();
 			}
 		});
-		panel.add(panelB);
+		
 
-		//adding lebels to show the Scores in the row 3 of the JPanel 'panel' 
-		panelS.add(label);
-		panelS.add(lbScore);
-		panel.add(panelS);
+		//setting lebels to show the Scores in the panel
 
-		//adding 'EndGame' button to the row 4 of the JPanel 'panel' 
-		JPanel jp = new JPanel(new GridLayout(1,4));
-		jp.add(new JLabel(""));
-		jp.add(new JLabel(""));
-		//jp.add(new JLabel(""));
-		jp.add(bEndGame);
-		panelR.add(jp);
+		label.setFont(new Font("Calibri", Font.BOLD, 17));	
+		label.setSize(120, 30);	
+		label.setLocation(105, 190);
+		panel.add(label);
+
+		lbScore.setFont(new Font("Calibri", Font.BOLD, 17));	//sets font of the Score label
+		lbScore.setSize(120, 30);	//sets the size of the the Score label
+		lbScore.setLocation(185, 190);	//sets the location(co-ordinates) of the Score label
+		lbScore.setText(String.valueOf(score));	//sets the initial text for the Score label
+		panel.add(lbScore);	//adds the Score label to the panel
+
+
+		//setting 'EndGame' button in the panel
+
+		bEndGame.setFont(new Font("Calibri",0, 13));
+		bEndGame.setSize(90, 28);
+		bEndGame.setLocation(190, 280);
+		panel.add(bEndGame);
 		//calls function 'endGameAction' when 'EndGame' button is clicked
 		bEndGame.addActionListener(new ActionListener() 
 		{
@@ -132,11 +137,10 @@ class primeComposite
 				endGameAction();
 			}
 		});
-		panel.add(panelR);
-
-		frame.add(panel);	//add the panel to the frame
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//set the frame close operation
-		frame.setVisible(true);	//set the visibility to true to display the components in the frame
+		
+		frame.add(panel);	//adds panel to the frame 
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);	//sets the frame close operation
+		frame.setVisible(true);	//sets the visibility to true to display the components in the frame
 	}
 
 	//Operations to be performed when 'Prime' button is clicked
@@ -157,7 +161,7 @@ class primeComposite
 		{
 			score+=1;	//increment the score
 			lbScore.setText(String.valueOf(score)); //show the new score
-			randomNum = r.nextInt(100);	//generate the next random number
+			randomNum = r.nextInt(350);	//generate the next random number
 			lbNumber.setText(String.valueOf(randomNum)); //set the random number in the 'Number' label
 		}
 		else //(Answer is incorrect)
@@ -183,7 +187,7 @@ class primeComposite
 		{
 			score+=1;
 			lbScore.setText(String.valueOf(score)); 
-			randomNum = r.nextInt(100);
+			randomNum = r.nextInt(350);
 			lbNumber.setText(String.valueOf(randomNum)); 
 		}
 		else	//(Answer is incorrect)
@@ -199,7 +203,7 @@ class primeComposite
 		JOptionPane.showMessageDialog(frame, "GAME OVER!\nYour Score : "+score);	//show a Message dialog box with scores
 		score = 0;	//set the score to 0
 		lbScore.setText(String.valueOf(score));	//show the new score
-		randomNum = r.nextInt(100);	//generate a new random number
+		randomNum = r.nextInt(350);	//generate a new random number
 		lbNumber.setText(String.valueOf(randomNum));	//set the random number in the 'Number' label
 	}	
 }
